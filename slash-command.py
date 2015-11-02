@@ -12,7 +12,7 @@ def reply():
     user_name = request.args.get('user_name')
     sc = SlackClient(os.environ['slack_token'])
     join_channel = sc.api_call('channels.join', name=text)
-    headtest = join_channel.headers.items()
+    headtest = request.headers.items()
 
     return headtest #'You just created a story called ' + text + ' your new slack channel is: #' + text
 
