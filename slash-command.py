@@ -14,8 +14,8 @@ def reply():
     join_channel = sc.api_call('channels.join', name=text)
     join_response = json.dumps(join_channel)
     read_response = json.loads(join_response)
-    channel_id = read_response["id"]
-    return channel_id #'You just created a story called ' + text + ' your new slack channel is: #' + text
+    for entry in read_response['channel']:
+        return entry['id'] #'You just created a story called ' + text + ' your new slack channel is: #' + text
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
