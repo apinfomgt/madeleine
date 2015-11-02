@@ -9,7 +9,7 @@ def reply():
     text = request.args.get('text')
     channel = request.args.get('channel_name')
     user_id = request.args.get('user_id')
-    headers = request.headers.get()
+    headers = request.headers
     user_name = request.args.get('user_name')
     sc = SlackClient(os.environ['slack_token'])
     join_channel = sc.api_call('channels.join', name=text)
