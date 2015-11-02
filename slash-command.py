@@ -16,7 +16,7 @@ def reply():
     # THIS DOESN'T WORK channel_id = request.args.get('id')
     #sc.api_call('channels.invite', channel=text, user=user_name)
     chan_id = json.loads(join_channel["channel"[0]["id"])
-    return 'The JSON values are: ' + join_channel #'You just created a story called ' + text + ' your new slack channel is: #' + text
+    return 'The JSON values are: ' + chan_id #'You just created a story called ' + text + ' your new slack channel is: #' + text
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
