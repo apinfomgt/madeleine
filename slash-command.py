@@ -12,9 +12,10 @@ def reply():
     user_name = request.args.get('user_name')
     sc = SlackClient(os.environ['slack_token'])
     join_channel = sc.api_call('channels.join', name=text)
-    #join_response = json.dumps(join_channel)
     read_response = json.loads(join_channel)
-    return read_response['channel']['id'] #'You just created a story called ' + text + ' your new slack channel is: #' + text
+    channel_id = read_response['channel']['id']
+    invite_to_channel = sc.api_call('channels.invite', channel=channel_id, user=user_id)
+    return 'You just created a story called ' + text + ' your new slack channel is: #' + text + 'You have been invited to this channel'
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
