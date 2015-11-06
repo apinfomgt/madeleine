@@ -1,5 +1,7 @@
 from flask import request
 
+app = Flask(__name__)
+
 @app.route('/events', methods=['POST'])
 def create_request():
     print(request.json)
