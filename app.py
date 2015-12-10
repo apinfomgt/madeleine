@@ -4,7 +4,7 @@ from flask import Flask, request
 
 app = Flask(__name__)
 
-@app.route("/", methods = ['GET'])
+@app.route("/slack/events", methods = ['GET'])
 def reply():
     text = request.args.get('text')
     channel = request.args.get('channel_name')
