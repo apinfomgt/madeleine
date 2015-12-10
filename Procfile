@@ -1,1 +1,1 @@
-web: python slash-command.py
+web: python app.py
