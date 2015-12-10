@@ -16,7 +16,7 @@ def reply():
     channel_id = read_response['channel']['id']
     invite_to_channel = sc.api_call('channels.invite', channel=channel_id, user=user_id)
     post_text = 'A new event channel called: ' + text + ' has been created. Join to contribute.'
-    post_to_new_events = sc.api_call('chat.postMessage', channel='#new\-events', text=post_text)
+    post_to_new_events = sc.api_call('chat.postMessage', channel='#general', text=post_text)
     return 'You just created a story called ' + text + ' your new slack channel is: #' + text + ' You have been invited to this channel.'
 
 if __name__ == "__main__":
