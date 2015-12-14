@@ -6,7 +6,7 @@ from slackapp import slackcreate
 app = Flask(__name__)
 
 @app.route("/")
-@app.route("/slack/event", methods = ['GET'])
+@app.route("/slack/events", methods = ['GET'])
 def slack_get():
     text = request.args.get('text')
     channel = request.args.get('channel_name')
