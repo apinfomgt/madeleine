@@ -1,7 +1,7 @@
 import json, os
 from slackclient import SlackClient
 
-def slack(text, channel, user_id, user_name):
+def slackcreate(text, channel, user_id, user_name):
     sc = SlackClient(os.environ['slack_token'])
     join_channel = sc.api_call('channels.join', name=text)
     read_response = json.loads(join_channel)
@@ -11,4 +11,4 @@ def slack(text, channel, user_id, user_name):
     return 'Test - You just created a story called ' + text + ' your new slack channel is: #' + text + ' You have been invited to this channel.'
 
 if __name__ == "__main__":
-    slack()
+    slackcreate()
