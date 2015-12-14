@@ -1,7 +1,7 @@
 import json, os
 from slackclient import SlackClient
 from flask import Flask, request
-from slackapp import slackcreate
+from slackapp import SlackCreate
 
 app = Flask(__name__)
 
