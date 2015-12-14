@@ -1,18 +1,18 @@
 import json, os
 from slackclient import SlackClient
 from flask import Flask, request
-from slack import slack
+from slackapp import slackcreate
 
 app = Flask(__name__)
 
+@app.route("/")
 @app.route("/slack/events", methods = ['GET'])
 def slack_get():
     text = request.args.get('text')
     channel = request.args.get('channel_name')
     user_id = request.args.get('user_id')
     user_name = request.args.get('user_name')
-    slack(text, channel, user_id, user_name)
-    return ()
+    return slackcreate(text, channel, user_id, user_name)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
