@@ -6,7 +6,7 @@ def slackcreate(text):
     sc = SlackClient(os.environ['slack_token'])
     # join_channel = sc.api_call('channels.join', name=text)
     testing = sc.api_call("api.test")
-    return
+    return testing
     # read_response = json.loads(join_channel)
     # channel_id = read_response['channel']['id']
     # invite_to_channel = sc.api_call('channels.invite', channel=channel_id, user=user_id)
