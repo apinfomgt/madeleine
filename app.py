@@ -5,17 +5,17 @@ from slackapp import slackcreate
 
 app = Flask(__name__)
 
-@app.route("/")
-def hello():
-    return "Hello."
+# @app.route("/")
+# def hello():
+#     return "Hello."
 
-# @app.route("/slack/events", methods = ['GET'])
-# def slack_get():
-#     text = request.args.get('text')
-#     channel = request.args.get('channel_name')
-#     user_id = request.args.get('user_id')
-#     user_name = request.args.get('user_name')
-#     return slackcreate(text, channel, user_id, user_name)
+@app.route("/", methods = ['GET'])
+def slack_get():
+    text = request.args.get('text')
+    channel = request.args.get('channel_name')
+    user_id = request.args.get('user_id')
+    user_name = request.args.get('user_name')
+    return slackcreate(text, channel, user_id, user_name)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
