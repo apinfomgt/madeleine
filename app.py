@@ -11,11 +11,11 @@ app = Flask(__name__)
 
 @app.route("/", methods = ['GET'])
 def slack_get():
-    # text = request.args.get('text')
-    # channel = request.args.get('channel_name')
-    # user_id = request.args.get('user_id')
-    # user_name = request.args.get('user_name')
-    return request.query_string # slackcreate(text, channel, user_id, user_name)
+    text = request.args.get('text')
+    channel = request.args.get('channel_name')
+    user_id = request.args.get('user_id')
+    user_name = request.args.get('user_name')
+    return text + channel + user_id + user_name # slackcreate(text, channel, user_id, user_name)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
