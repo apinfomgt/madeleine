@@ -1,7 +1,7 @@
 import uuid
 
-def genereate_uuid():
+def generate_uuid():
     print uuid.uuid4()
 
 if __name__ == "__main__":
-    genereate_uuid()
+    generate_uuid()

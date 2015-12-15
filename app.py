@@ -2,7 +2,7 @@ import json, os
 from slackclient import SlackClient
 from flask import Flask, request
 from slackapp import slackcreate
-from genereate_uuid import genereate_uuid
+from generate_uuid import generate_uuid
 
 app = Flask(__name__)
 
@@ -17,7 +17,7 @@ def slack_get():
 
 @app.route("/uuid", methods = ['GET'])
 def get_uuid():
-    return genereate_uuid()
+    return generate_uuid()
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
