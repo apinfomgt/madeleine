@@ -1,0 +1,7 @@
+- config:
+  -testset: "Slack Tests"
+
+- test:
+  - group: "Slack"
+  - name: "Smoketest"
+  - url: ""
