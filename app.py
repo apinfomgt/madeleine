@@ -23,17 +23,24 @@ def trello_new_event():
     try:
         response = request.data
         data = json.loads(response)
+        print data
         cardid = data['action']['data']['card']['id']
+        print cardid
         name = data['action']['data']['card']['name']
+        print name
         try:
             description = data['action']['data']['card']['desc']
         except:
             description = ''
+        print description
         #update this with uuid function when we have it
         guid = '123456789'
         newboard = TrelloCreate()._create_event_board(name=name,guid=guid,description=description)
+        print newboard
         url = newboard.url
+        print url
         card = MyTrelloClient()._get_card(cardid)
+        print card
         TrelloCreate()._update_event_card(newboard,card)
         return jsonify({'result': True})
     except Exception as e:
