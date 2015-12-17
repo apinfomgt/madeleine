@@ -43,5 +43,5 @@ class MyTrelloClient(object):
         return card
 
 if __name__ == '__main__':
-    pubboard = MyTrelloClient()._get_board('5627a1f767216d6f4ded4816')
-    print pubboard.name
+    boards = MyTrelloClient()._list_boards
+    print boards
