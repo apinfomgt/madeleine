@@ -2,6 +2,7 @@ import json, os
 from slackclient import SlackClient
 from flask import Flask, request
 from slackapp import slackcreate
+from trelloapp import TrelloCreate,MyTrelloClient
 
 app = Flask(__name__)
 
