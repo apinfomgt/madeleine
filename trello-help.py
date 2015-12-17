@@ -43,5 +43,8 @@ class MyTrelloClient(object):
         return card
 
 if __name__ == '__main__':
+    print api_key
+    print token
     boards = MyTrelloClient()._list_boards
-    print boards
+    for b in boards:
+        print b.name
