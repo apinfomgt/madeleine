@@ -54,22 +54,26 @@ class TrelloCreate():
         else:
             description = description
         newboard = MyTrelloClient()._add_board(name)
+        print newboard
         #close all default lists before creating new ones
+        print 'delete default lists'
         try:
             defaultlists = newboard.get_lists('open')
             for defaultlist in defaultlists:
                 defaultlist.close()
         except:
             pass
-
+        print 'adding labels'
         #create labels for metadata list
         addeventidlabel = [newboard.add_label('EventId','green')]
         addnamelabel = [newboard.add_label('EventName','blue')]
         adddescriptionlabel = [newboard.add_label('EventDescription','red')]
+        print 'creating lists'
         #create lists
         publish = newboard.add_list('To publish')
         progress = newboard.add_list('In progress')
         metadata = newboard.add_list('Metadata')
+        print 'adding metadata cards'
         card1 = metadata.add_card(name=guid,labels=addeventidlabel)
         card2 = metadata.add_card(name=name,labels=addnamelabel)
         card3 = metadata.add_card(name=description,labels=adddescriptionlabel)

@@ -31,7 +31,7 @@ def trello_new_event():
         try:
             description = data['action']['data']['card']['desc']
         except:
-            description = ''
+            description = 'Enter description'
         print description
         #update this with uuid function when we have it
         guid = '123456789'
