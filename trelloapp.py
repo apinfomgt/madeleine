@@ -44,6 +44,8 @@ class MyTrelloClient(object):
 
 class TrelloCreate():
     def __init__(self):
+        print 'getting pub board'
+        print pub_board
         self.publish = MyTrelloClient()._get_board(pub_board)
         self.events = self.publish.get_list(event_list)
 
