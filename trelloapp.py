@@ -47,6 +47,7 @@ class TrelloCreate():
         print 'getting pub board'
         print pub_board
         self.publish = MyTrelloClient()._get_board(pub_board)
+        print self.publish
         self.events = self.publish.get_list(event_list)
 
 
