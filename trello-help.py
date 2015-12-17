@@ -45,6 +45,8 @@ class MyTrelloClient(object):
 if __name__ == '__main__':
     print api_key
     print token
-    boards = MyTrelloClient()._list_boards
+    boards = MyTrelloClient()._list_boards()
     for b in boards:
+        print b.id
         print b.name
+        print b.open_lists()
