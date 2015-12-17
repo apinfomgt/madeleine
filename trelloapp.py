@@ -49,6 +49,10 @@ class TrelloCreate():
 
 
     def _create_event_board(self,name,guid,description=None):
+        if description == '' or description == None:
+            description = 'Enter description'
+        else:
+            description = description
         newboard = MyTrelloClient()._add_board(name)
         #close all default lists before creating new ones
         try:
