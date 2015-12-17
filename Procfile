@@ -1,1 +1,1 @@
-web: python trelloapp.py
+web: python app.py
