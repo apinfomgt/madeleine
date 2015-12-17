@@ -36,7 +36,8 @@ def trello_new_event():
         card = MyTrelloClient()._get_card(cardid)
         TrelloCreate()._update_event_card(newboard,card)
         return jsonify({'result': True})
-    except:
+    except Exception as e:
+        print(str(e))
         return jsonify({'result': 'Error'})
 
     return jsonify({'result': True})
