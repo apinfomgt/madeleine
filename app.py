@@ -6,6 +6,10 @@ from generate_uuid import generateuuid
 
 app = Flask(__name__)
 
+@app.route("/uuid", methods = ['GET'])
+def get_uuid():
+    return generateuuid()
+
 @app.route("/")
 @app.route("/slack/events", methods = ['GET'])
 def slack_get():
@@ -13,11 +17,8 @@ def slack_get():
     channel = request.args.get('channel_name')
     user_id = request.args.get('user_id')
     user_name = request.args.get('user_name')
-    return slackcreate(text, channel, user_id, user_name)
-
-@app.route("/uuid", methods = ['GET'])
-def get_uuid():
-    return generateuuid()
+    eventid = get_uuid()
+    return slackcreate(text, channel, user_id, user_name, eventid)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

@@ -1,7 +1,9 @@
-import uuid
+import uuid, re
 
 def generateuuid():
-    print uuid.uuid4()
+    eventid = uuid.uuid4()
+    cleanid = re.sub('[-]', '', str(eventid))
+    return cleanid
 
 if __name__ == "__main__":
     generateuuid()
