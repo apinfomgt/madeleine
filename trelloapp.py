@@ -1,12 +1,21 @@
-import os, re
+import os, re, json
 from trello import TrelloClient
 
-api_key = os.environ['TRELLO_API_KEY']
-api_secret = os.environ['TRELLO_API_SECRET']
-token = os.environ['TRELLO_TOKEN_KEY']
-token_secret = os.environ['TRELLO_TOKEN_SECRET']
-pub_board = os.environ['PUBLISH_BOARD']
-event_list = os.environ['EVENT_LIST']
+with open('config.json') as json_data_file:
+    data = json.load(json_data_file)
+api_key = data['TRELLO_API_KEY']
+api_secret = data['TRELLO_API_SECRET']
+token = data['TRELLO_TOKEN_KEY']
+token_secret = data['TRELLO_TOKEN_SECRET']
+pub_board = data['PUBLISH_BOARD']
+event_list = data['EVENT_LIST']
+
+#api_key = os.environ['TRELLO_API_KEY']
+#api_secret = os.environ['TRELLO_API_SECRET']
+#token = os.environ['TRELLO_TOKEN_KEY']
+#token_secret = os.environ['TRELLO_TOKEN_SECRET']
+#pub_board = os.environ['PUBLISH_BOARD']
+#event_list = os.environ['EVENT_LIST']
 
 #api_key='d5ce3f1198288ff5de75d0f8c13ecd0c'
 #api_secret='59546674a99f6287cbc49259beac752ef3d0481425f1f0b2fca8c1b3a46843a7'
