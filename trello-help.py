@@ -54,11 +54,11 @@ class MyTrelloClient(object):
 
 if __name__ == '__main__':
     print api_key
-	print api_secret
+    print api_secret
     print token
-	print token_secret
-	print pub_board
-	print event_list
+    print token_secret
+    print pub_board
+    print event_list
 	
     boards = MyTrelloClient()._list_boards()
     for b in boards:
