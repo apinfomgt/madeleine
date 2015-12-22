@@ -15,26 +15,24 @@ boardid = os.environ['PUBLISH_BOARD']
 
 if __name__ == '__main__':
 
-    url = 'https://trello.com/1/boards/' + boardid + '?key=' + api_key + '&token=' + token
-    print url
-    """
+
+
     print api_key
     print token
     print boardid
 
-    _trello = TrelloClient(api_key=api_key,token=token)
-    print _trello
+    mytrello = TrelloClient(api_key=api_key,token=token)
+    print mytrello
     try:
-        board = _trello.get_board(boardid)
+        board = mytrello.get_board(boardid)
         print board.name
     except:
         print 'failed via py-trello'
 
     try:
-        url = 'https://trello.com/1/boards/' + boardid + '?key=' + api_key + '&token=' + token
+        url =  'https://trello.com/1/boards/%s?key=%s&token=%s' % (boardid,api_key,token)
         print url
         r = requests.get(url)
         print json.loads(r.text)['name']
     except:
         print 'failed via requests'
-    """
