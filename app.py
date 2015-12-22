@@ -24,6 +24,10 @@ def slack_get():
     except Exception,e:
         print str(e)
 
+@app.route('/trello/events', methods=['HEAD'])
+def head():
+    return jsonify({'result': True})
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
