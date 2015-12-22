@@ -12,4 +12,4 @@ def slackcreate(text, channel, user_id, user_name, eventid):
     return 'You just created a story called ' + text + ' your new slack channel is: #' + text + ' You have been invited to this channel.'
 
 if __name__ == "__main__":
-    Slackcreate().slackcreate()
+    slackcreate()
