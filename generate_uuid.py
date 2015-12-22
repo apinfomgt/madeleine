@@ -1,6 +1,9 @@
-import uuid
+import uuid, re
 
-def genereate_uuid():
-    print uuid.uuid4()
+def generateuuid():
+    eventid = uuid.uuid4()
+    cleanid = re.sub('[-]', '', str(eventid))
+    return cleanid
 
-genereate_uuid()
+if __name__ == "__main__":
+    generateuuid()
