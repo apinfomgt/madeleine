@@ -1,13 +1,16 @@
-import json, os
+import json, os, requests
 from slackclient import SlackClient
+from flask import Flask, request, jsonify
 from slackapp import slackcreate
-from flask import request, Flask, jsonify
-from trelloapp import TrelloCreate,MyTrelloClient
-import requests
-
-requests.packages.urllib3.disable_warnings()
+from generate_uuid import generateuuid
+from trelloapp import TrelloCreate, MyTrelloClient
 
 app = Flask(__name__)
+
+@app.route("/uuid", methods = ['GET'])
+def get_uuid():
+    return generateuuid()
+
 @app.route("/")
 @app.route("/slack/events", methods = ['GET'])
 def slack_get():
@@ -15,7 +18,8 @@ def slack_get():
     channel = request.args.get('channel_name')
     user_id = request.args.get('user_id')
     user_name = request.args.get('user_name')
-    return slackcreate(text, channel, user_id, user_name)
+    eventid = get_uuid()
+    return slackcreate(text, channel, user_id, user_name, eventid)
 
 @app.route('/trello/events', methods=['POST'])
 def trello_new_event():
@@ -33,7 +37,7 @@ def trello_new_event():
             description = 'Enter description'
         print description
         #update this with uuid function when we have it
-        guid = '123456789'
+        guid = get_uuid()
         print 'creating new board'
         newboard = TrelloCreate()._create_event_board(name=name,guid=guid,description=description)
         print newboard
@@ -53,6 +57,6 @@ def trello_new_event():
 def head():
     return jsonify({'result': True})
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
