@@ -19,6 +19,10 @@ def slack_get():
     user_id = request.args.get('user_id')
     user_name = request.args.get('user_name')
     eventid = get_uuid()
+    #create trello stuff, Zach test this
+    newboard = TrelloCreate()._create_event_board(name=text,guid=eventid,description=None)
+    url = newboard.url
+    TrelloCreate()._create_event_card(name=text,guid=eventid,url=url,description=None)
     try:
         return slackcreate(text, channel, user_id, user_name, eventid)
     except Exception,e:
@@ -49,6 +53,7 @@ def trello_new_event():
         card = MyTrelloClient()._get_card(cardid)
         print card
         TrelloCreate()._update_event_card(newboard,card)
+        #Zach start here: add slackcreate function, use variables name,guid
         return jsonify({'result': True})
     except Exception as e:
         print(str(e))
