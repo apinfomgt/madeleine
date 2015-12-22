@@ -2,7 +2,7 @@ import json, os
 from slackclient import SlackClient
 
 def slackcreate(text, channel, user_id, user_name, eventid):
-    sc = SlackClient(os.environ['slack_token'])
+    sc = SlackClient(os.environ['slack_token']).strip()
     join_channel = sc.api_call('channels.join', name=text)
     read_response = json.loads(join_channel)
     channel_id = read_response['channel']['id']
