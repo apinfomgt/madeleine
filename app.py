@@ -19,7 +19,10 @@ def slack_get():
     user_id = request.args.get('user_id')
     user_name = request.args.get('user_name')
     eventid = get_uuid()
-    return slackcreate(text, channel, user_id, user_name, eventid)
+    try:
+        return slackcreate(text, channel, user_id, user_name, eventid)
+    except Exception,e:
+        print str(e)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
