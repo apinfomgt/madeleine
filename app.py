@@ -3,6 +3,7 @@ from slackclient import SlackClient
 from flask import Flask, request, jsonify
 from slackapp import slackcreate
 from generate_uuid import generateuuid
+from trelloapp import TrelloCreate, MyTrelloClient
 
 app = Flask(__name__)
 
