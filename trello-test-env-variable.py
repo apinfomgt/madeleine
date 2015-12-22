@@ -23,7 +23,9 @@ if __name__ == '__main__':
 
     try:
         url = 'https://trello.com/1/boards/' + boardid + '?key=' + api_key + '&token=' + token
-        r = requests.get(url)
+        print url
+	r = requests.get(url)
+	print r
         print json.loads(r.text)['name']
     except:
         print 'failed via requests'
