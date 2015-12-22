@@ -11,7 +11,6 @@ app = Flask(__name__)
 def get_uuid():
     return generateuuid()
 
-@app.route("/")
 @app.route("/slack/events", methods = ['GET'])
 def slack_get():
     text = request.args.get('text')
@@ -21,6 +20,7 @@ def slack_get():
     eventid = get_uuid()
     return slackcreate(text, channel, user_id, user_name, eventid)
 
+'''
 @app.route('/trello/events', methods=['POST'])
 def trello_new_event():
     try:
@@ -56,6 +56,7 @@ def trello_new_event():
 @app.route('/trello/events', methods=['HEAD'])
 def head():
     return jsonify({'result': True})
+'''
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
