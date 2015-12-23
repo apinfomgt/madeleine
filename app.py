@@ -22,9 +22,9 @@ def slack_get():
     # create event in Trello
     newboard = TrelloCreate()._create_event_board(name=text,guid=eventid,description=None)
     url = newboard.url
-    TrelloCreate()._create_event_card(name=text,guid=eventid,url=url,description=None)
+    # TrelloCreate()._create_event_card(name=text,guid=eventid,url=url,description=None)
     try:
-        return slackcreate(text, channel, user_id, user_name, eventid)
+        return slackcreate(text, channel, user_id, user_name, eventid), TrelloCreate()._create_event_card(name=text,guid=eventid,url=url,description=None) 
     except Exception,e:
         print str(e)
 
