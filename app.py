@@ -11,9 +11,6 @@ app = Flask(__name__)
 def get_uuid():
     return generateuuid()
 
-def set_guid():
-    return get_uuid()
-
 @app.route("/")
 @app.route("/slack/events", methods = ['GET'])
 def slack_get():
