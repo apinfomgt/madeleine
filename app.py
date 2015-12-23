@@ -14,9 +14,6 @@ def get_uuid():
 def set_guid():
     return get_uuid()
 
-def set_eventid():
-    if guid is None:
-        guid = eventid
 @app.route("/")
 @app.route("/slack/events", methods = ['GET'])
 def slack_get():
