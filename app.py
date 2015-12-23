@@ -54,7 +54,7 @@ def trello_new_event():
         print card
         TrelloCreate()._update_event_card(newboard,card)
         # create event in Slack
-        slackcreate(name, channel=None, user_id=None, user_name=None, guid)
+        slackcreate(name, None, None, None, guid)
         return jsonify({'result': True})
     except Exception as e:
         print(str(e))
