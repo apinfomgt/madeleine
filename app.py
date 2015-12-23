@@ -11,7 +11,6 @@ app = Flask(__name__)
 def get_uuid():
     global guid
     guid = generateuuid()
-    return guid
 
 @app.route("/")
 @app.route("/slack/events", methods = ['GET'])
@@ -20,7 +19,7 @@ def slack_get():
     channel = request.args.get('channel_name')
     user_id = request.args.get('user_id')
     user_name = request.args.get('user_name')
-    eventid = get_uuid()
+    eventid = guid
     # create event in Trello
     newboard = TrelloCreate()._create_event_board(name=text,guid=eventid,description=None)
     url = newboard.url
