@@ -12,7 +12,7 @@ def get_uuid():
     return generateuuid()
 
 def set_guid():
-    guid = get_uuid()
+    return get_uuid()
 
 def set_eventid():
     if guid is None:
