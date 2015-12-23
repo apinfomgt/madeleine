@@ -9,11 +9,14 @@ app = Flask(__name__)
 
 @app.route("/uuid", methods = ['GET'])
 def get_uuid():
-    global eventid
-    eventid = generateuuid()
-    global guid
-    guid = None
+    return generateuuid()
 
+def set_guid():
+    guid = get_uuid()
+
+def set_eventid():
+    if guid is None:
+        guid = eventid
 @app.route("/")
 @app.route("/slack/events", methods = ['GET'])
 def slack_get():
@@ -21,14 +24,13 @@ def slack_get():
     channel = request.args.get('channel_name')
     user_id = request.args.get('user_id')
     user_name = request.args.get('user_name')
-    if guid is None:
-        guid = eventid
+    guid = set_guid()
     # create event in Trello
     newboard = TrelloCreate()._create_event_board(name=text,guid=guid,description=None)
     url = newboard.url
     TrelloCreate()._create_event_card(name=text,guid=guid,url=url,description=None)
     try:
-        return slackcreate(text, channel, user_id, user_name, eventid)
+        return slackcreate(text, channel, user_id, user_name, guid)
     except Exception,e:
         print str(e)
 
