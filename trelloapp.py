@@ -7,6 +7,8 @@ token = os.environ['TRELLO_TOKEN_KEY'].strip()
 token_secret = os.environ['TRELLO_TOKEN_SECRET'].strip()
 pub_board = os.environ['PUBLISH_BOARD'].strip()
 event_list = os.environ['EVENT_LIST'].strip()
+from_slack = os.environ['FROM_SLACK'].strip()
+from_trello = os.environ['FROM_TRELLO'].strip()
 
 _trello_client = None
 
