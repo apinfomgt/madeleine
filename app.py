@@ -26,7 +26,7 @@ def slack_get():
     print wfrom
     try:
         print 'creating event card'
-        TrelloCreate()._create_event_card(name=name,guid=guid,url=url,wfrom=wfrom,description=None)
+        TrelloCreate()._create_event_card(name=text,guid=guid,url=url,wfrom=wfrom,description=None)
     except Exception,e:
         print str(e)
     try:
