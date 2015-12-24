@@ -81,7 +81,10 @@ class TrelloCreate():
         return newboard
 
     def _create_event_card(self,name,guid,url,wfrom,description=None):
-        try:
+        print wfrom
+	print from_slack
+	print from_trello
+	try:
             if wfrom == 'slack':
                 label = self.publish.client.fetch_json('/boards/' + pub_board + '/labels/' + from_slack )
                 labels = [Label.from_json(self.publish,label)]
@@ -91,6 +94,7 @@ class TrelloCreate():
             else:
                 labels = []
             print labels
+	
             newcard = self.events.add_card(name,description,labels=labels)
             newcard.attach(name=name, url=url)
             return newcard
