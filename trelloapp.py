@@ -1,5 +1,5 @@
 import os, re, json
-from trello import TrelloClient
+from trello import TrelloClient,Label
 
 api_key = os.environ['TRELLO_API_KEY'].strip()
 api_secret = os.environ['TRELLO_API_SECRET'].strip()
@@ -7,6 +7,8 @@ token = os.environ['TRELLO_TOKEN_KEY'].strip()
 token_secret = os.environ['TRELLO_TOKEN_SECRET'].strip()
 pub_board = os.environ['PUBLISH_BOARD'].strip()
 event_list = os.environ['EVENT_LIST'].strip()
+from_slack = os.environ['FROM_SLACK'].strip()
+from_trello = os.environ['FROM_TRELLO'].strip()
 
 _trello_client = None
 
@@ -78,14 +80,26 @@ class TrelloCreate():
         card3 = metadata.add_card(name=description,labels=adddescriptionlabel)
         return newboard
 
-    def _create_event_card(self,name,guid,url,description=None):
-        try:
-            newcard = self.events.add_card(name,description)
+    def _create_event_card(self,name,guid,url,wfrom,description=None):
+        print wfrom
+	print from_slack
+	print from_trello
+	try:
+            if wfrom == 'slack':
+                label = self.publish.client.fetch_json('/boards/' + pub_board + '/labels/' + from_slack )
+                labels = [Label.from_json(self.publish,label)]
+            elif wfrom == 'trello':
+                label = self.publish.client.fetch_json('/boards/' + pub_board + '/labels/' + from_trello )
+                labels = [Label.from_json(self.publish,label)]
+            else:
+                labels = []
+            print labels
+	
+            newcard = self.events.add_card(name,description,labels=labels)
             newcard.attach(name=name, url=url)
             return newcard
         except Exception as e:
             print(str(e))
-            self.fail("Caught Exception adding card")
 
     def _update_event_card(self,board,card):
         try:
@@ -95,4 +109,3 @@ class TrelloCreate():
             return card
         except Exception as e:
             print(str(e))
-            self.fail("Caught Exception updating card")

@@ -18,11 +18,17 @@ def slack_get():
     channel = request.args.get('channel_name')
     user_id = request.args.get('user_id')
     user_name = request.args.get('user_name')
-    guid = set_guid()
-    # create event in Trello
+    guid = get_uuid()
     newboard = TrelloCreate()._create_event_board(name=text,guid=guid,description=None)
     url = newboard.url
-    TrelloCreate()._create_event_card(name=text,guid=guid,url=url,description=None)
+    print url
+    wfrom = 'slack'
+    print wfrom
+    try:
+        print 'creating event card'
+        TrelloCreate()._create_event_card(name=text,guid=guid,url=url,wfrom=wfrom,description=None)
+    except Exception,e:
+        print str(e)
     try:
         return slackcreate(text, channel, user_id, user_name, guid)
     except Exception,e:
@@ -35,27 +41,30 @@ def trello_new_event():
         data = json.loads(response)
         print data
         cardid = data['action']['data']['card']['id']
-        print cardid
-        name = data['action']['data']['card']['name']
-        print name
-        try:
-            description = data['action']['data']['card']['desc']
-        except:
-            description = 'Enter description'
-        print description
-        #update this with uuid function when we have it
-        guid = get_uuid()
-        print 'creating new board'
-        newboard = TrelloCreate()._create_event_board(name=name,guid=guid,description=description)
-        print newboard
-        url = newboard.url
-        print url
+        actiontype = data['action']['type']
         card = MyTrelloClient()._get_card(cardid)
         print card
-        TrelloCreate()._update_event_card(newboard,card)
-        # create event in Slack
-        slackcreate(name, None, None, None, guid)
-        return jsonify({'result': True})
+        #test if card was created by slack
+        wfrom = [x.name for x in card.labels if x.name=='FromSlack']
+
+        if 'FromSlack' not in wfrom and actiontype == 'createCard':
+            name = data['action']['data']['card']['name']
+            try:
+                description = data['action']['data']['card']['desc']
+            except:
+                description = 'Enter description'
+            guid = get_uuid()
+            print 'creating new board'
+            newboard = TrelloCreate()._create_event_board(name=name,guid=guid,description=description)
+            print newboard
+            url = newboard.url
+            print url
+            TrelloCreate()._update_event_card(newboard,card)
+            # create event in Slack
+            slackcreate(name, None, None, None, guid)
+            return jsonify({'result': True})
+        else:
+            return jsonify({'result': 'No event created'})
     except Exception as e:
         print(str(e))
         return jsonify({'result': 'Error'})
