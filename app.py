@@ -19,6 +19,7 @@ def slack_get():
     user_id = request.args.get('user_id')
     user_name = request.args.get('user_name')
     guid = get_uuid()
+    slackwork = slackcreate(text, channel, user_id, user_name, guid)
     newboard = TrelloCreate()._create_event_board(name=text,guid=guid,description=None)
     url = newboard.url
     print url
@@ -26,13 +27,13 @@ def slack_get():
     print wfrom
     try:
         print 'creating event card'
-        TrelloCreate()._create_event_card(name=text,guid=guid,url=url,wfrom=wfrom,description=None)
+        return TrelloCreate()._create_event_card(name=text,guid=guid,url=url,wfrom=wfrom,description=None)
     except Exception,e:
         print str(e)
-    try:
-        return slackcreate(text, channel, user_id, user_name, guid)
-    except Exception,e:
-        print str(e)
+    # try:
+    #     return slackcreate(text, channel, user_id, user_name, guid)
+    # except Exception,e:
+    #     print str(e)
 
 @app.route('/trello/events', methods=['POST'])
 def trello_new_event():
