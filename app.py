@@ -21,8 +21,14 @@ def slack_get():
     guid = get_uuid()
     newboard = TrelloCreate()._create_event_board(name=text,guid=guid,description=None)
     url = newboard.url
+    print url
     wfrom = 'slack'
-    TrelloCreate()._create_event_card(name=name,guid=guid,url=url,wfrom=wfrom,description=description)
+    print wfrom
+    try:
+        print 'creating event card'
+        TrelloCreate()._create_event_card(name=text,guid=guid,url=url,wfrom=wfrom,description=None)
+    except Exception,e:
+        print str(e)
     try:
         return slackcreate(text, channel, user_id, user_name, guid)
     except Exception,e:
