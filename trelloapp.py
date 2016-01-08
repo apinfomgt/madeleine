@@ -137,27 +137,27 @@ class TrelloCreate():
     	print from_slack
     	print from_trello
     	try:
-                if wfrom == 'slack':
-                    label = self.publish.client.fetch_json('/boards/' + pub_board + '/labels/' + from_slack )
-                    labels = [Label.from_json(self.publish,label)]
-                elif wfrom == 'trello':
-                    label = self.publish.client.fetch_json('/boards/' + pub_board + '/labels/' + from_trello )
-                    labels = [Label.from_json(self.publish,label)]
-                else:
-                    labels = []
-                print labels
+            if wfrom == 'slack':
+                label = self.publish.client.fetch_json('/boards/' + pub_board + '/labels/' + from_slack )
+                labels = [Label.from_json(self.publish,label)]
+            elif wfrom == 'trello':
+                label = self.publish.client.fetch_json('/boards/' + pub_board + '/labels/' + from_trello )
+                labels = [Label.from_json(self.publish,label)]
+            else:
+                labels = []
+            print labels
 
-                newcard = self.events.add_card(name,description,labels=labels)
-                newcard.attach(name=name, url=url)
-                return newcard
+            newcard = self.events.add_card(name,description,labels=labels)
+            newcard.attach(name=name, url=url)
+            return newcard
         except Exception as e:
             print(str(e))
 
-        def _update_event_card(self,board,card):
-            try:
-                url = board.url
-                name = url
-                card.attach(name=name, url=url)
-                return card
-            except Exception as e:
-                print(str(e))
+    def _update_event_card(self,board,card):
+        try:
+            url = board.url
+            name = url
+            card.attach(name=name, url=url)
+            return card
+        except Exception as e:
+            print(str(e))
