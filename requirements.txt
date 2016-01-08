@@ -2,3 +2,4 @@ Flask==0.10.0
 request==0.0.2
 slackclient==0.16
 py-trello==0.4.3
+requests==2.9.1
