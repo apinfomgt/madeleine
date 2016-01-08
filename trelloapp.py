@@ -1,7 +1,7 @@
 import os, re, json, requests
 from trello import TrelloClient,Label
 from requests.auth import HTTPDigestAuth
-
+"""
 api_key = os.environ['TRELLO_API_KEY'].strip()
 api_secret = os.environ['TRELLO_API_SECRET'].strip()
 token = os.environ['TRELLO_TOKEN_KEY'].strip()
@@ -13,6 +13,20 @@ from_trello = os.environ['FROM_TRELLO'].strip()
 marklogic = os.environ['MARKLOGIC'].strip()
 ml_user = os.environ['ML_USER'].strip()
 ml_pass = os.environ['ML_PASS'].strip()
+published_list = os.environ['PUBLISHED_LIST'].strip()
+"""
+api_key='d5ce3f1198288ff5de75d0f8c13ecd0c'
+api_secret='59546674a99f6287cbc49259beac752ef3d0481425f1f0b2fca8c1b3a46843a7'
+token='a765d04f047650757ed7ccac107a72bbd5562d50a320c9605228eed698f2b35d'
+token_secret='5c9415d771eb90137b939ac77fa394cb'
+pub_board='5633d93ffc0721b51330a0e1'
+event_list='5633d94a2460148854315431'
+from_slack='567c0a735a01025c0859c895'
+from_trello=''
+marklogic = 'http://kevin.associatedpress.com:8181/Madeleine/eventPublish.xqy'
+ml_user = 'admin'
+ml_pass = 'russell'
+published_list = '5633d9531160be8379221b41'
 
 _trello_client = None
 
@@ -90,6 +104,10 @@ class TrelloPublish():
         print  model
         headers = {'content-type': 'application/json'}
         r = requests.post(marklogic, auth=HTTPDigestAuth(ml_user,ml_pass), data=json.dumps(model), headers=headers)
+        card.client.fetch_json(
+            '/cards/' + card.id + '/idList',
+            http_method='PUT',
+            post_args={'value': published_list } )
 
 class TrelloCreate():
     def __init__(self):

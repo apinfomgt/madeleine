@@ -88,7 +88,7 @@ def trello_publish():
         if actiontype == 'updateCard' and listafter == 'Publishing':
             TrelloPublish()._trigger_publish(cardid)
         else:
-            pass
+            return jsonify({'result': True})
     except Exception as e:
         print(str(e))
         return jsonify({'result': 'Error'})
