@@ -94,7 +94,7 @@ def trello_publish():
         return jsonify({'result': 'Error'})
 
 @app.route('/trello/publish', methods=['HEAD'])
-def head():
+def pub_head():
     return jsonify({'result': True})
 
 if __name__ == "__main__":
