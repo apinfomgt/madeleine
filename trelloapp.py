@@ -76,6 +76,10 @@ class TrelloPublish():
                 boardshortid = attachment['url'].split('/')[4]
                 print 'publishing boardshortid:' + boardshortid
                 self._publish_from_trello(boardshortid)
+        card.client.fetch_json(
+            '/cards/' + card.id + '/idList',
+            http_method='PUT',
+            post_args={'value': published_list } )
 
     def _publish_from_trello(self,boardid):
         model = {}
@@ -104,11 +108,7 @@ class TrelloPublish():
         print  model
         headers = {'content-type': 'application/json'}
         r = requests.post(marklogic, auth=HTTPDigestAuth(ml_user,ml_pass), data=json.dumps(model), headers=headers)
-        card.client.fetch_json(
-            '/cards/' + card.id + '/idList',
-            http_method='PUT',
-            post_args={'value': published_list } )
-
+        
 class TrelloCreate():
     def __init__(self):
         self.publish = MyTrelloClient()._get_board(pub_board)
