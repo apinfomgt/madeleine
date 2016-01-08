@@ -1,4 +1,4 @@
-import os, re, json, requests, urllib
+import os, re, json, requests
 from trello import TrelloClient,Label
 from requests.auth import HTTPDigestAuth
 
