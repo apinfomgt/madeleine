@@ -4,6 +4,7 @@ from flask import Flask, request, jsonify
 from slackapp import slackcreate
 from generate_uuid import generateuuid
 from trelloapp import TrelloCreate, MyTrelloClient, TrelloPublish
+from threading import Thread
 
 app = Flask(__name__)
 
@@ -11,13 +12,22 @@ app = Flask(__name__)
 def get_uuid():
     return generateuuid()
 
-@app.route("/")
 @app.route("/slack/events", methods = ['GET'])
-def slack_get():
+def slack_create():
     text = request.args.get('text')
     channel = request.args.get('channel_name')
     user_id = request.args.get('user_id')
     user_name = request.args.get('user_name')
+    thr = Thread(target=slack_get, args=[text, channel, user_id, user_name])
+    return thr.start()
+
+@app.route("/")
+@app.route("/slack/process", methods = ['GET'])
+def slack_get(text, channel, user_id, user_name):
+    # text = request.args.get('text')
+    # channel = request.args.get('channel_name')
+    # user_id = request.args.get('user_id')
+    # user_name = request.args.get('user_name')
     guid = get_uuid()
     slackwork = slackcreate(text, channel, user_id, user_name, guid)
     newboard = TrelloCreate()._create_event_board(name=text,guid=guid,description=None)
