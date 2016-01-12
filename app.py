@@ -3,7 +3,7 @@ from slackclient import SlackClient
 from flask import Flask, request, jsonify
 from slackapp import slackcreate
 from generate_uuid import generateuuid
-from trelloapp import TrelloCreate, MyTrelloClient
+from trelloapp import TrelloCreate, MyTrelloClient, TrelloPublish
 
 app = Flask(__name__)
 
@@ -74,6 +74,28 @@ def trello_new_event():
 
 @app.route('/trello/events', methods=['HEAD'])
 def head():
+    return jsonify({'result': True})
+
+@app.route('/trello/publish', methods=['POST'])
+def trello_publish():
+    try:
+        response = request.data
+        data = json.loads(response)
+        print data
+        listafter = data['action']['data']['listAfter']['name']
+        actiontype = data['action']['type']
+        cardid = data['action']['data']['card']['id']
+        print listafter + ':' + actiontype + ':' + cardid
+        if actiontype == 'updateCard' and listafter == 'Publishing':
+            TrelloPublish()._trigger_publish(cardid)
+        else:
+            return jsonify({'result': True})
+    except Exception as e:
+        print(str(e))
+        return jsonify({'result': 'Error'})
+
+@app.route('/trello/publish', methods=['HEAD'])
+def pub_head():
     return jsonify({'result': True})
 
 if __name__ == "__main__":
