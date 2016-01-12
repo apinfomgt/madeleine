@@ -11,21 +11,13 @@ app = Flask(__name__)
 def get_uuid():
     return generateuuid()
 
-@app.route("/slack/events")
-def slack_call():
+@app.route("/")
+@app.route("/slack/events", methods = ['GET'])
+def slack_get():
     text = request.args.get('text')
     channel = request.args.get('channel_name')
     user_id = request.args.get('user_id')
     user_name = request.args.get('user_name')
-    return slack_get(text, channel, user_id, user_name)
-
-@app.route("/")
-@app.route("/slack/process", methods = ['GET'])
-def slack_get(text, channel, user_id, user_name):
-    # text = request.args.get('text')
-    # channel = request.args.get('channel_name')
-    # user_id = request.args.get('user_id')
-    # user_name = request.args.get('user_name')
     guid = get_uuid()
     slackwork = slackcreate(text, channel, user_id, user_name, guid)
     newboard = TrelloCreate()._create_event_board(name=text,guid=guid,description=None)
