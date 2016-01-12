@@ -25,19 +25,16 @@ def slack_create():
 
 def slack_get(text, channel, user_id, user_name, guid):
     slackwork = slackcreate(text, channel, user_id, user_name, guid)
-    # TEMPORARY WHILE TESTING THREADING
-    # newboard = TrelloCreate()._create_event_board(name=text,guid=guid,description=None)
-    # url = newboard.url
-    # print url
-    # wfrom = 'slack'
-    # print wfrom
-    # try:
-    #     print 'creating event card'
-    #     return TrelloCreate()._create_event_card(name=text,guid=guid,url=url,wfrom=wfrom,description=None)
-    # except Exception,e:
-    #     print str(e)
-
-    # TO REMAIN COMMENTED, NOT PART OF THE TEMPORARY SET
+    newboard = TrelloCreate()._create_event_board(name=text,guid=guid,description=None)
+    url = newboard.url
+    print url
+    wfrom = 'slack'
+    print wfrom
+    try:
+        print 'creating event card'
+        return TrelloCreate()._create_event_card(name=text,guid=guid,url=url,wfrom=wfrom,description=None)
+    except Exception,e:
+        print str(e)
     # try:
     #     return slackcreate(text, channel, user_id, user_name, guid)
     # except Exception,e:
