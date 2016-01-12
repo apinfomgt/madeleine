@@ -21,7 +21,7 @@ def slack_create():
     guid = get_uuid()
     thr = Thread(target=slack_get, args=[text, channel, user_id, user_name, guid])
     thr.start()
-    return jsonify({'result': True}
+    return jsonify({'result': True})
 
 def slack_get(text, channel, user_id, user_name, guid):
     slackwork = slackcreate(text, channel, user_id, user_name, guid)
