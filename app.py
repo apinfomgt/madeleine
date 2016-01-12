@@ -18,11 +18,11 @@ def slack_create():
     channel = request.args.get('channel_name')
     user_id = request.args.get('user_id')
     user_name = request.args.get('user_name')
-    thr = Thread(target=slack_get, args=[text, channel, user_id, user_name])
+    guid = get_uuid()
+    thr = Thread(target=slack_get, args=[text, channel, user_id, user_name, guid])
     return thr.start()
 
-def slack_get(text, channel, user_id, user_name):
-    guid = get_uuid()
+def slack_get(text, channel, user_id, user_name, guid):
     slackwork = slackcreate(text, channel, user_id, user_name, guid)
     # TEMPORARY WHILE TESTING THREADING
     # newboard = TrelloCreate()._create_event_board(name=text,guid=guid,description=None)
