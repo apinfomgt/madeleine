@@ -21,13 +21,7 @@ def slack_create():
     thr = Thread(target=slack_get, args=[text, channel, user_id, user_name])
     return thr.start()
 
-@app.route("/")
-@app.route("/slack/process", methods = ['GET'])
 def slack_get(text, channel, user_id, user_name):
-    # text = request.args.get('text')
-    # channel = request.args.get('channel_name')
-    # user_id = request.args.get('user_id')
-    # user_name = request.args.get('user_name')
     guid = get_uuid()
     slackwork = slackcreate(text, channel, user_id, user_name, guid)
     # TEMPORARY WHILE TESTING THREADING
