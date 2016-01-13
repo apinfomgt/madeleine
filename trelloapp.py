@@ -14,6 +14,7 @@ marklogic = os.environ['MARKLOGIC'].strip()
 ml_user = os.environ['ML_USER'].strip()
 ml_pass = os.environ['ML_PASS'].strip()
 published_list = os.environ['PUBLISHED_LIST'].strip()
+organization_id = os.environ['ORGANIZATION_ID'].strip()
 
 _trello_client = None
 
@@ -48,6 +49,10 @@ class MyTrelloClient(object):
     def _get_card(self,id):
         card = self._trello.get_card(id)
         return card
+
+    def _get_organization(self,id):
+        org = self._trello.get_organization(id)
+        return org
 
 class TrelloPublish():
     def __init__(self):
@@ -108,6 +113,12 @@ class TrelloCreate():
         else:
             description = description
         newboard = MyTrelloClient()._add_board(name)
+        #add board to Team Madeleine
+        newboard.client.fetch_json(
+            '/boards/' + newboard.id + '/idOrganization',
+            http_method='PUT',
+            post_args={'value': organization_id
+                       } )
         #close all default lists before creating new ones
         print 'delete default lists'
         try:
@@ -153,11 +164,11 @@ class TrelloCreate():
         except Exception as e:
             print(str(e))
 
-    def _update_event_card(self,board,card):
+    def _update_event_card(self,url,card):
         try:
-            url = board.url
-            name = url
-            card.attach(name=name, url=url)
+            #url = board.url
+            #name = url
+            card.attach(name=url, url=url)
             return card
         except Exception as e:
             print(str(e))

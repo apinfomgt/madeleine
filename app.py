@@ -3,6 +3,7 @@ from slackclient import SlackClient
 from flask import Flask, request, jsonify
 from slackapp import slackcreate
 from generate_uuid import generateuuid
+from getimage import getimage
 from trelloapp import TrelloCreate, MyTrelloClient, TrelloPublish
 from threading import Thread
 
@@ -43,7 +44,7 @@ def trello_from_trello(guid,cardid,actiontype,name,description):
             newboard = TrelloCreate()._create_event_board(name=name,guid=guid,description=description)
             url = newboard.url
             print 'updating card with board url'
-            TrelloCreate()._update_event_card(newboard,card)
+            TrelloCreate()._update_event_card(url,card)
             print 'creating event in slack'
             slackcreate(name, None, None, None, guid)
         else:
@@ -94,6 +95,24 @@ def trello_publish():
 
 @app.route('/trello/publish', methods=['HEAD'])
 def pub_head():
+    return jsonify({'result': True})
+
+def enrich_card(cardid):
+    card = MyTrelloClient()._get_card(cardid)
+    name = card.name
+    itemid = re.search(r'\b([0-9a-fA-F]{32,32})\b', name).group(1)
+    url = getimage(itemid)
+    TrelloCreate()._update_event_card(url,card)
+
+@app.route('/trello/enrich', methods=['POST'])
+def trello_enrich():
+    cardid = data['action']['data']['card']['id']
+    thr = Thread(target=enrich_card, args=[cardid])
+    thr.start()
+    return jsonify({'result': True})
+
+@app.route('/trello/enrich', methods=['HEAD'])
+def enrich_head():
     return jsonify({'result': True})
 
 if __name__ == "__main__":
