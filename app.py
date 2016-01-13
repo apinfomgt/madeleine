@@ -24,80 +24,73 @@ def slack_create():
     return 'Your event is being created'
 
 def slack_get(text, channel, user_id, user_name, guid):
-    slackwork = slackcreate(text, channel, user_id, user_name, guid)
-    newboard = TrelloCreate()._create_event_board(name=text,guid=guid,description=None)
-    url = newboard.url
-    print url
-    wfrom = 'slack'
-    print wfrom
     try:
-        print 'creating event card'
-        return TrelloCreate()._create_event_card(name=text,guid=guid,url=url,wfrom=wfrom,description=None)
+        slackwork = slackcreate(text, channel, user_id, user_name, guid)
+        newboard = TrelloCreate()._create_event_board(name=text,guid=guid,description=None)
+        url = newboard.url
+        wfrom = 'slack'
+        TrelloCreate()._create_event_card(name=text,guid=guid,url=url,wfrom=wfrom,description=None)
     except Exception,e:
         print str(e)
-    # try:
-    #     return slackcreate(text, channel, user_id, user_name, guid)
-    # except Exception,e:
-    #     print str(e)
+
+def trello_from_trello(guid,cardid,actiontype,name,description):
+    try:
+        card = MyTrelloClient()._get_card(cardid)
+        print 'testing if card was created by slack'
+        wfrom = [x.name for x in card.labels if x.name=='FromSlack']
+        if 'FromSlack' not in wfrom and actiontype == 'createCard':
+            print 'creating new board'
+            newboard = TrelloCreate()._create_event_board(name=name,guid=guid,description=description)
+            url = newboard.url
+            print 'updating card with board url'
+            TrelloCreate()._update_event_card(newboard,card)
+            print 'creating event in slack'
+            slackcreate(name, None, None, None, guid)
+        else:
+            pass
+    except Exception,e:
+        print str(e)
 
 @app.route('/trello/events', methods=['POST'])
 def trello_new_event():
+    guid = get_uuid()
+    print 'creating event: ' + str(guid)
+    response = request.data
+    data = json.loads(response)
+    cardid = data['action']['data']['card']['id']
+    actiontype = data['action']['type']
+    name = data['action']['data']['card']['name']
     try:
-        response = request.data
-        data = json.loads(response)
-        print data
-        cardid = data['action']['data']['card']['id']
-        actiontype = data['action']['type']
-        card = MyTrelloClient()._get_card(cardid)
-        print card
-        #test if card was created by slack
-        wfrom = [x.name for x in card.labels if x.name=='FromSlack']
-
-        if 'FromSlack' not in wfrom and actiontype == 'createCard':
-            name = data['action']['data']['card']['name']
-            try:
-                description = data['action']['data']['card']['desc']
-            except:
-                description = 'Enter description'
-            guid = get_uuid()
-            print 'creating new board'
-            newboard = TrelloCreate()._create_event_board(name=name,guid=guid,description=description)
-            print newboard
-            url = newboard.url
-            print url
-            TrelloCreate()._update_event_card(newboard,card)
-            # create event in Slack
-            slackcreate(name, None, None, None, guid)
-            return jsonify({'result': True})
-        else:
-            return jsonify({'result': 'No event created'})
-    except Exception as e:
-        print(str(e))
-        return jsonify({'result': 'Error'})
-
+        description = data['action']['data']['card']['desc']
+    except:
+        description = 'Enter description'
+    thr = Thread(target=trello_from_trello, args=[guid,cardid,actiontype,name,description])
+    thr.start()
     return jsonify({'result': True})
 
 @app.route('/trello/events', methods=['HEAD'])
 def head():
     return jsonify({'result': True})
 
-@app.route('/trello/publish', methods=['POST'])
-def trello_publish():
+def publish_from_trello(listafter,actiontype,cardid):
     try:
-        response = request.data
-        data = json.loads(response)
-        print data
-        listafter = data['action']['data']['listAfter']['name']
-        actiontype = data['action']['type']
-        cardid = data['action']['data']['card']['id']
-        print listafter + ':' + actiontype + ':' + cardid
         if actiontype == 'updateCard' and listafter == 'Publishing':
             TrelloPublish()._trigger_publish(cardid)
         else:
-            return jsonify({'result': True})
-    except Exception as e:
-        print(str(e))
-        return jsonify({'result': 'Error'})
+            pass
+    except Exception,e:
+        print str(e)
+
+@app.route('/trello/publish', methods=['POST'])
+def trello_publish():
+    response = request.data
+    data = json.loads(response)
+    listafter = data['action']['data']['listAfter']['name']
+    actiontype = data['action']['type']
+    cardid = data['action']['data']['card']['id']
+    thr = Thread(target=publish_from_trello, args=[listafter,actiontype,cardid])
+    thr.start()
+    return jsonify({'result': True})
 
 @app.route('/trello/publish', methods=['HEAD'])
 def pub_head():
