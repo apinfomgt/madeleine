@@ -1,4 +1,4 @@
-import json, os, requests
+import json, os, requests, re
 from slackclient import SlackClient
 from flask import Flask, request, jsonify
 from slackapp import slackcreate
