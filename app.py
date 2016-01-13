@@ -73,12 +73,9 @@ def trello_new_event():
 def head():
     return jsonify({'result': True})
 
-def publish_from_trello(listafter,actiontype,cardid):
+def publish_from_trello(cardid):
     try:
-        if actiontype == 'updateCard' and listafter == 'Publishing':
-            TrelloPublish()._trigger_publish(cardid)
-        else:
-            pass
+        TrelloPublish()._trigger_publish(cardid)
     except Exception,e:
         print str(e)
 
@@ -89,8 +86,11 @@ def trello_publish():
     listafter = data['action']['data']['listAfter']['name']
     actiontype = data['action']['type']
     cardid = data['action']['data']['card']['id']
-    thr = Thread(target=publish_from_trello, args=[listafter,actiontype,cardid])
-    thr.start()
+    if actiontype == 'updateCard' and listafter == 'Publishing':
+        thr = Thread(target=publish_from_trello, args=[cardid])
+        thr.start()
+    else:
+        pass
     return jsonify({'result': True})
 
 @app.route('/trello/publish', methods=['HEAD'])
@@ -110,8 +110,12 @@ def trello_enrich():
     response = request.data
     data = json.loads(response)
     cardid = data['action']['data']['card']['id']
-    thr = Thread(target=enrich_card, args=[cardid])
-    thr.start()
+    actiontype = data['action']['type']
+    if actiontype == 'createCard':
+        thr = Thread(target=enrich_card, args=[cardid])
+        thr.start()
+    else:
+        pass
     return jsonify({'result': True})
 
 @app.route('/trello/enrich', methods=['HEAD'])
