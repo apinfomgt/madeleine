@@ -106,6 +106,8 @@ def enrich_card(cardid):
 
 @app.route('/trello/enrich', methods=['POST'])
 def trello_enrich():
+    response = request.data
+    data = json.loads(response)
     cardid = data['action']['data']['card']['id']
     thr = Thread(target=enrich_card, args=[cardid])
     thr.start()

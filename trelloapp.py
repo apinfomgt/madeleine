@@ -144,7 +144,7 @@ class TrelloCreate():
         metadata = newboard.add_list('Metadata')
         print 'adding webhooks'
         #add webhooks for new lists
-        MyTrelloClient()._create_webhook(callback_url=enrich_url,id_model=publish.id,desc='To publish: ' + name)
+        #MyTrelloClient()._create_webhook(callback_url=enrich_url,id_model=publish.id,desc='To publish: ' + name)
         MyTrelloClient()._create_webhook(callback_url=enrich_url,id_model=progress.id,desc='In progress: ' + name)
         print 'adding metadata cards'
         #add metadata
