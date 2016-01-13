@@ -14,6 +14,8 @@ marklogic = os.environ['MARKLOGIC'].strip()
 ml_user = os.environ['ML_USER'].strip()
 ml_pass = os.environ['ML_PASS'].strip()
 published_list = os.environ['PUBLISHED_LIST'].strip()
+organization_id = os.environ['ORGANIZATION_ID'].strip()
+enrich_url = os.environ['ENRICH_URL'].strip()
 
 _trello_client = None
 
@@ -48,6 +50,14 @@ class MyTrelloClient(object):
     def _get_card(self,id):
         card = self._trello.get_card(id)
         return card
+
+    def _get_organization(self,id):
+        org = self._trello.get_organization(id)
+        return org
+
+    def _create_webhook(self,callback_url,id_model,desc=None):
+        webhook = self._trello.create_hook(callback_url,id_model,desc)
+        return webhook
 
 class TrelloPublish():
     def __init__(self):
@@ -108,6 +118,12 @@ class TrelloCreate():
         else:
             description = description
         newboard = MyTrelloClient()._add_board(name)
+        #add board to Team Madeleine
+        newboard.client.fetch_json(
+            '/boards/' + newboard.id + '/idOrganization',
+            http_method='PUT',
+            post_args={'value': organization_id
+                       } )
         #close all default lists before creating new ones
         print 'delete default lists'
         try:
@@ -126,7 +142,12 @@ class TrelloCreate():
         publish = newboard.add_list('To publish')
         progress = newboard.add_list('In progress')
         metadata = newboard.add_list('Metadata')
+        print 'adding webhooks'
+        #add webhooks for new lists
+        #MyTrelloClient()._create_webhook(callback_url=enrich_url,id_model=publish.id,desc='To publish: ' + name)
+        MyTrelloClient()._create_webhook(callback_url=enrich_url,id_model=progress.id,desc='In progress: ' + name)
         print 'adding metadata cards'
+        #add metadata
         card1 = metadata.add_card(name=guid,labels=addeventidlabel)
         card2 = metadata.add_card(name=name,labels=addnamelabel)
         card3 = metadata.add_card(name=description,labels=adddescriptionlabel)
@@ -153,11 +174,11 @@ class TrelloCreate():
         except Exception as e:
             print(str(e))
 
-    def _update_event_card(self,board,card):
+    def _update_event_card(self,url,card):
         try:
-            url = board.url
-            name = url
-            card.attach(name=name, url=url)
+            #url = board.url
+            #name = url
+            card.attach(name=url, url=url)
             return card
         except Exception as e:
             print(str(e))
