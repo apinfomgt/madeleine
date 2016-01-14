@@ -2,7 +2,7 @@ import os, re, json, requests
 from requests.auth import HTTPDigestAuth
 
 
-marklogic_snippets = os.environ['MARKLOGIC']
+marklogic_snippets = os.environ['MARKLOGIC_SNIPPETS']
 ml_user = os.environ['ML_USER']
 ml_pass = os.environ['ML_PASS']
 
