@@ -9,8 +9,7 @@ def getimage(itemid):
     mediatype = tree.xpath('//appl:MediaType/text()', namespaces={'appl': 'http://ap.org/schemas/03/2005/appl'})
     if mediatype[0] == 'Text':
         imageids = tree.xpath('//appl:AssociatedWith/text()', namespaces={'appl': 'http://ap.org/schemas/03/2005/appl'})
-        bapiurl = 'http://binaryapi.ap.org/' + imageids[0] + '/preview.jpg?wm=api'
-        #return bapiurl
+        bapiurl = 'http://binaryapi.ap.org/' + imageids[0] + '/preview.jpg'
     else:
         bapiurl = 'http://binaryapi.ap.org/' + itemid + '/preview.jpg'
     return bapiurl
