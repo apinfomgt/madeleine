@@ -5,6 +5,7 @@ from slackapp import slackcreate
 from generate_uuid import generateuuid
 from getimage import getimage
 from trelloapp import TrelloCreate, MyTrelloClient, TrelloPublish
+from marklogicapp import snippet
 from threading import Thread
 
 app = Flask(__name__)
@@ -31,6 +32,7 @@ def slack_get(text, channel, user_id, user_name, guid):
         url = newboard.url
         wfrom = 'slack'
         TrelloCreate()._create_event_card(name=text,guid=guid,url=url,wfrom=wfrom,description=None)
+        snippet(eventid=guid,eventname=text)
     except Exception,e:
         print str(e)
 
@@ -47,6 +49,8 @@ def trello_from_trello(guid,cardid,actiontype,name,description):
             TrelloCreate()._update_event_card(url,card)
             print 'creating event in slack'
             slackcreate(name, None, None, None, guid)
+            print 'creating event appl snippet'
+            snippet(eventid=guid,eventname=name)
         else:
             pass
     except Exception,e:
