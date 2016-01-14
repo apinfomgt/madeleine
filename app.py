@@ -22,7 +22,7 @@ def slack_create():
     user_name = request.args.get('user_name')
     guid = get_uuid()
     casanovaurl = os.environ['ngrok_url']
-    casanovaevent = casanovaurl + '/?eventid=' + guid + '&eventname=' + text
+    casanovaevent = requests.get(casanovaurl + '/?eventid=' + guid + '&eventname=' + text)
     thr = Thread(target=slack_get, args=[text, channel, user_id, user_name, guid])
     thr.start()
     return 'Your event is being created'
