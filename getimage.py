@@ -12,7 +12,7 @@ def getimage(itemid):
         bapiurl = 'http://binaryapi.ap.org/' + imageids[0] + '/preview.jpg?wm=api'
         #return bapiurl
     else:
-        bapiurl = 'http://binaryapi.ap.org/' + itemid + '/preview.jpg?wm=api'
+        bapiurl = 'http://binaryapi.ap.org/' + itemid + '/preview.jpg'
     return bapiurl
 
 if __name__ == "__main__":
