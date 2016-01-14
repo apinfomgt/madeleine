@@ -1,15 +1,10 @@
 import os, re, json, requests
 from requests.auth import HTTPDigestAuth
 
-"""
+
 marklogic_snippets = os.environ['MARKLOGIC']
 ml_user = os.environ['ML_USER']
 ml_pass = os.environ['ML_PASS']
-"""
-
-marklogic_snippets = 'http://kevin.associatedpress.com:8181/Madeleine/snippetUpdate.xqy'
-ml_user = 'admin'
-ml_pass = 'russell'
 
 def snippet(eventid,eventname):
     event = {"eventid":eventid,"eventname":eventname}
