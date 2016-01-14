@@ -2,7 +2,7 @@ import requests
 from lxml import etree, objectify
 
 def getimage(itemid):
-    url="http://coreapi.ap.org/AP.MessageRepository.APIHost/Services/MessageRepository.svc/documents/"+itemid
+    url="http://catalogapi.ap.org/AP.MessageRepository.APIHost/services/MessageRepository.svc/documents/"+itemid
     r = requests.get(url)
     data = r.content
     tree = etree.fromstring(data)
