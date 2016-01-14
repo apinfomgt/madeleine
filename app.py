@@ -101,8 +101,8 @@ def enrich_card(cardid):
     card = MyTrelloClient()._get_card(cardid)
     name = card.name
     itemid = re.search(r'\b([0-9a-fA-F]{32,32})\b', name).group(1)
-    #url = getimage(itemid)
-    url = 'http://binaryapi.ap.org/' + itemid + '/preview.jpg'
+    url = getimage(itemid)
+    #url = 'http://binaryapi.ap.org/' + itemid + '/preview.jpg'
     TrelloCreate()._update_event_card(url,card)
 
 @app.route('/trello/enrich', methods=['POST'])
