@@ -53,6 +53,9 @@ def trello_from_trello(guid,cardid,actiontype,name,description):
             slackcreate(name, None, None, None, guid)
             print 'creating event appl snippet'
             snippet(eventid=guid,eventname=name)
+            print 'updating casanova'
+            casanovaurl = os.environ['ngrok_url']
+            casanovaevent = requests.get(casanovaurl + '/?eventid=' + guid + '&eventname=' + name)
         else:
             pass
     except Exception,e:
